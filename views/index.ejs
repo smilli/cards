@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <h1><%= title %></h1>
+    <form name="create-game" action="addGame" method="POST">
+    	<input id="new-game" type="submit" value="Start a new game->" />
+    </form>
+    <p>
+    This is an online clone of the fantastic game <a href="http://www.cardsagainsthumanity.com/">Cards Against Humanity</a>.  Check out the code on github.
+    </p>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      var socket = io.connect('http://localhost');
+    </script>
+  </body>
+</html>
