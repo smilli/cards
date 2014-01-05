@@ -24,7 +24,7 @@ a {
 	float: left;
 	height: 100%;
 	width: 25%;
-	border: solid 1px #000;
+	border-right: solid 1px #000;
 	background-color: #151515;
 }
 
@@ -68,7 +68,41 @@ a {
 	height: 100%;
 	background-color: #F2F2F2;
 	border: solid 1px #000;
-	padding: 1%;
+}
+
+#fade{
+	position: fixed;
+	width: 75%;
+	height: 100%;
+	background-color: #000;
+	opacity: .82;
+	z-index: 90;
+}
+
+#overlay{
+	position: absolute;
+	display: block;
+	margin: auto;
+	padding: 15px;
+	width: 35%;
+	left: 45%;
+	top: 30%;
+	background-color: #D8D8D8;
+	-webkit-border-radius: 12px;
+	border-radius: 12px;
+	-webkit-box-shadow: 3px 3px 5px 3px #262626;
+	box-shadow: 3px 3px 5px 3px #262626;
+	color: #262626;
+	text-align: center;
+	font-family: "Avant Garde", Avantgarde, "Century Gothic", CenturyGothic, "AppleGothic", sans-serif;
+	font-size: 1.5rem;
+	z-index: 100;
+
+}
+
+#overlay #link{
+	color: #585858;
+	font-size: 1.5rem;
 }
 
 #description{
