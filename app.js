@@ -40,7 +40,7 @@ function errorHandler(err, req, res, next){
 }
 
 app.get('/', routes.index);
-app.post('/addGame', gameServer.redirectToNewRoom);
+app.post('/addGame', gameServer.createNewRoom);
 app.get('/:roomId', findGame, routes.game); 
 
 
