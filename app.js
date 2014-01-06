@@ -1,4 +1,4 @@
-
+ 
 /**
  * Module dependencies.
  */
@@ -23,26 +23,25 @@ app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(errorHandler);
 
-// development only
-if ('development' == app.get('env')) {
-  app.use(express.errorHandler());
-}
-
-function findGame(req, res, next){
-  var roomId = parseInt(req.params.roomId);
-  if (!isNaN(roomId) && gameServer.validRoom(roomId)) return next();
-  next(new Error('That room does not exist'));
-}
-
 function errorHandler(err, req, res, next){
   console.log(err);
   res.end();
+}
+
+// development only
+if ('development' == app.get('env')) {
+  app.use(express.errorHandler());
 }
 
 app.get('/', routes.index);
 app.post('/addGame', gameServer.createNewRoom);
 app.get('/:roomId', findGame, routes.game); 
 
+function findGame(req, res, next){
+  var roomId = parseInt(req.params.roomId);
+  if (!isNaN(roomId) && gameServer.validRoom(roomId)) return next();
+  next(new Error('That room does not exist'));
+}
 
 var server = http.createServer(app);
 gameServer.listen(server);

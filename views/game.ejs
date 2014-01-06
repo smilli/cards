@@ -20,9 +20,13 @@
     <div id="game">
       <div id="fade"></div>
       <div id="overlay">
-        Waiting for at least 3 people!
-        <br/> Share this link with your friends:
-        <br/><span id="link">http://localhost:3000/1</span>
+        <% if (typeof url !== 'undefined') { %>
+          Waiting for at least 3 people!
+          <br/> Share this link with your friends:
+          <br/><span id="link"><%= url %></span>
+        <% } else { %>
+          <button id="start">START</button>
+        <% } %>
       </div>
       <!--<div id="description">Choose one.  <span id="timer">3:00</span></div>-->
     </div>

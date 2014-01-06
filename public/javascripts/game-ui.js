@@ -30,6 +30,18 @@ $(document).ready(function() {
     $('#questionCard').html(question.text);
   });
 
+  // min number of players achieved
+  socket.on('can activate game', function(){
+    console.log('game is ready to be activated!');
+    $('#overlay').html('<button id="start">START</button>');
+  });
+
+  // had min number but then someone disconnected
+  socket.on('can not activate game', function(){
+    $('#overlay').html('Waiting for at least three people!  <br/> Share this link with your friends:'
+      + '<br/><span id="link">' + document.URL + '</span>');
+  })
+
   // receiving messages
   socket.on('message', function(message){
     $('#chat').append(divEscapedContentElement(message));
