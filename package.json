@@ -12,6 +12,7 @@
     "csv": "0.3.6",
     "redis": "0.10.0",
     "mocha": "1.16.2",
-    "zombie": ">=2.0.0-alpha24"
+    "zombie": ">=2.0.0-alpha24",
+    "session.socket.io": "0.1.6"
   }
 }

@@ -6,6 +6,7 @@
 var express = require('express')
   , MemoryStore = express.session.MemoryStore
   , sessionStore = new MemoryStore()
+  , cookieParser = express.cookieParser(process.env.SESSION_SECRET)
   , routes = require('./routes')
   , http = require('http')
   , path = require('path')
@@ -19,10 +20,9 @@ app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 app.use(express.favicon());
 app.use(express.logger('dev'));
-app.use(express.cookieParser());
+app.use(cookieParser);
 app.use(express.session({
   store: sessionStore,
-  secret: process.env.SESSION_SECRET, 
   cookie: {maxAge: 1000 * 60 * 3}
 }));
 app.use(express.json());
@@ -52,7 +52,7 @@ function findGame(req, res, next){
 }
 
 var server = http.createServer(app);
-gameServer.listen(server, process.env.SESSION_SECRET, sessionStore);
+gameServer.listen(server, sessionStore, cookieParser);
 server.listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
 });
