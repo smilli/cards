@@ -14,6 +14,7 @@ $(document).ready(function() {
   // after server checks to make sure this is a valid room
   socket.on('init', function(data){
       game = new Game(socket, data.name, data.roomId);
+      if (data.canActivate) showStartButton();
       console.log('initialized')
   });
 
@@ -33,8 +34,12 @@ $(document).ready(function() {
   // min number of players achieved
   socket.on('can activate game', function(){
     console.log('game is ready to be activated!');
-    $('#overlay').html('<button id="start">START</button>');
+    showStartButton();
   });
+
+  function showStartButton(){
+    $('#overlay').html('<button id="start">START</button>');
+  }
 
   // had min number but then someone disconnected
   socket.on('can not activate game', function(){

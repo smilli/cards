@@ -17,6 +17,8 @@ app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 app.use(express.favicon());
 app.use(express.logger('dev'));
+app.use(express.cookieParser());
+app.use(express.session({secret: process.env.SESSION_SECRET, cookie: {maxAge: 1000 * 60 * 4}}));
 app.use(express.json());
 app.use(express.urlencoded());
 app.use(app.router);

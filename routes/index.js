@@ -15,10 +15,9 @@ exports.game = function(req, res){
   var room = Room.getRoom(roomId);
   if (room.active) {
     res.render('full', {title: 'Cards Against Humanity', msg: 'Sorry, this game has already begun!'});
+    // if you refresh room will be full even if you just joined
   } else if (room.isFull()) {
     res.render('full', {title: 'Cards Against Humanity', msg: 'Sorry, this game is already full!'});
-  } else if (room.numPlayers() >= 2) { // need to make sure this is a new user & not one that's just refreshing
-    res.render('game', {title: 'Cards Against Humanity'});
   } else {
     res.render('game', {title: 'Cards Against Humanity', url: BASE_URL+req.path});
   }
