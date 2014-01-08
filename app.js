@@ -29,7 +29,7 @@ app.use(express.json());
 app.use(express.urlencoded());
 app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(errorHandler);
+// app.use(errorHandler);
 
 function errorHandler(err, req, res, next){
   console.log(err);

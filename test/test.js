@@ -29,10 +29,16 @@ describe('game server', function(){
   });
 
   // this is not currently working
-  it('should create a new game', function(){
+  it('should create a new game', function(done){
     console.log('new game');
-    console.log(browser.location);
-    assert.notEqual(browser.text(), '');
+    console.log(browser.location.href);
+    console.log(browser.text());
+    browser
+      .visit(BASE_URL + '1')
+      .then(function(){
+        assert.notEqual(browser.text(), '');
+        done();
+      })
   });
 });
 

@@ -11,10 +11,13 @@ var socket = io.connect();
 $(document).ready(function() {
   var game;
 
+  socket.on('connect', function(){
+    socket.emit('init', {url: document.URL});
+  });
+
   // after server checks to make sure this is a valid room
   socket.on('init', function(data){
       game = new Game(socket, data.name, data.roomId);
-      if (data.canActivate) showStartButton();
       console.log('initialized')
   });
 
