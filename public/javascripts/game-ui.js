@@ -25,12 +25,14 @@ $(document).ready(function() {
   });
 
   function displayCards(cards){
+    var html = '';
     for (var i = 0; i < cards.length; i++){
-      $('#game').append($('<div></div>', {"class": "card"}).html(cards[i]));
+      html += '<div class="card">' + cards[i] + '</div>';
     }
+    $('#game').append(html);
 
     $('.card').click(function(e){
-      if (!game.chosen){
+      if (!game.chosen && !game.wordCzar){
         var card = $(this);
         game.chosen = $(this).text();
         console.log(game.chosen);
@@ -57,12 +59,21 @@ $(document).ready(function() {
     $('#desc-msg').html(desc);
   }
 
+  socket.on('new user', displayUsers);
+
   function displayUsers(users){
     var html = '';
     for (var i=0; i < users.length; i++){
-      html += '<li id="user:' + users[i].id + '">' + users[i].nickname + '</li>';
+      html += '<li id="user' + users[i].id + '">' + users[i].nickname + '</li>';
     }
     $('#users').append(html);
+  }
+
+  socket.on('remove user', removeUser);
+
+  function removeUser(user){
+    console.log(user);
+    $('#user' + user.id).remove();
   }
 
   // min number of players achieved
@@ -99,9 +110,12 @@ $(document).ready(function() {
 
   function activateGame(e){
     e.preventDefault();
-    socket.emit('start game');
-    $('#fade').hide();
-    $('#overlay').hide();
+    socket.emit('start game', function(){
+      $('#desc-msg').text('You are the word czar!  Waiting for players to choose their cards.')
+      $('#fade').hide();
+      $('#overlay').hide();
+      game.wordCzar = true;
+    });
   }
 
   socket.on('start game', function(){
