@@ -18,31 +18,58 @@ $(document).ready(function() {
   // after server checks to make sure this is a valid room
   socket.on('init', function(data){
       game = new Game(socket, data.name, data.roomId);
+      displayCards(data.cards);
+      updateQuestion(data.question);
+      displayUsers(data.users);
       console.log('initialized')
   });
 
-  // the original hand that is dealt to user
-  socket.on('hand', function(cards){
+  function displayCards(cards){
     for (var i = 0; i < cards.length; i++){
       $('#game').append($('<div></div>', {"class": "card"}).html(cards[i]));
     }
-  });
+
+    $('.card').click(function(e){
+      if (!game.chosen){
+        var card = $(this);
+        game.chosen = $(this).text();
+        console.log(game.chosen);
+        socket.emit('card chosen', game.chosen, function(newCard){
+          $('#desc-msg').text('Waiting for other players to choose!');
+          console.log(newCard);
+          card.html(newCard);
+        });
+      }
+    });
+  }
 
   // update the current question
-  socket.on('current question', function(question){
-    console.log(question);
+  socket.on('current question', updateQuestion);
+
+  function updateQuestion(question){
     $('#questionCard').html(question.text);
-  });
+    game.numToChoose = question.choose;
+    if(question.choose==1){
+      var desc = 'Choose one card!'
+    } else if (question.choose==2) {
+      var desc = 'Choose two cards!'
+    }
+    $('#desc-msg').html(desc);
+  }
+
+  function displayUsers(users){
+    var html = '';
+    for (var i=0; i < users.length; i++){
+      html += '<li id="user:' + users[i].id + '">' + users[i].nickname + '</li>';
+    }
+    $('#users').append(html);
+  }
 
   // min number of players achieved
   socket.on('can activate game', function(){
-    console.log('game is ready to be activated!');
-    showStartButton();
-  });
-
-  function showStartButton(){
     $('#overlay').html('<button id="start">START</button>');
-  }
+    $('#start').click(activateGame);
+  });
 
   // had min number but then someone disconnected
   socket.on('can not activate game', function(){
@@ -65,6 +92,32 @@ $(document).ready(function() {
       $('#chat').scrollTop($('#chat').prop('scrollHeight'));
       $('#message').val('');
     }
+  });
+
+  // when user clicks start game button
+  $('#start').click(activateGame);
+
+  function activateGame(e){
+    e.preventDefault();
+    socket.emit('start game');
+    $('#fade').hide();
+    $('#overlay').hide();
+  }
+
+  socket.on('start game', function(){
+    $('#fade').hide();
+    $('#overlay').hide();
+  });
+
+  socket.on('tick', function(time){
+    var minutes = Math.floor(time/60);
+    var seconds = time % 60;
+    if (seconds==0) {
+      seconds = '00';
+    } else if (seconds < 10){
+      seconds = '0' + seconds;
+    }
+    $('#timer').html(minutes+':'+seconds);
   });
 
 });

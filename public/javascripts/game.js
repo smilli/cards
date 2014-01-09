@@ -1,6 +1,8 @@
 var Game = function(socket, name, roomId) {
   this.socket = socket;
   this.name = name;
+  this.numToChoose = null;
+  this.chosen = null;
   this.roomId = roomId;
 };
 
