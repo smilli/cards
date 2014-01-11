@@ -17,7 +17,7 @@ $(document).ready(function() {
 
   // after server checks to make sure this is a valid room
   socket.on('init', function(data){
-      game = new Game(socket, data.name, data.roomId);
+      game = new Game(socket, data.name, data.roomId, data.isCardCzar, data.cardChosen);
       displayCards(data.cards);
       updateQuestion(data.question);
       displayUsers(data.users);
@@ -29,17 +29,24 @@ $(document).ready(function() {
     for (var i = 0; i < cards.length; i++){
       html += '<div class="card">' + cards[i] + '</div>';
     }
-    $('#game').append(html);
+    $('#cards').html(html);
 
-    $('.card').click(function(e){
-      if (!game.chosen && !game.wordCzar){
+    attachCardClickHandler();
+  }
+
+  function attachCardClickHandler(){
+    $('#cards .card').click(function(e){
+      if (!game.chosen && !game.isCardCzar){
         var card = $(this);
         game.chosen = $(this).text();
         console.log(game.chosen);
-        socket.emit('card chosen', game.chosen, function(newCard){
-          $('#desc-msg').text('Waiting for other players to choose!');
-          console.log(newCard);
-          card.html(newCard);
+        socket.emit('card chosen', game.chosen, function(data){
+          addChosenCard(game.chosen);
+          card.html(data.newCard);
+          $('#cards').addClass('no-hover');
+          if (!data.allChosen){
+            $('#desc-msg').text('Waiting for other players to choose!');
+          }
         });
       }
     });
@@ -51,11 +58,25 @@ $(document).ready(function() {
   function updateQuestion(question){
     $('#questionCard').html(question.text);
     game.numToChoose = question.choose;
-    if(question.choose==1){
-      var desc = 'Choose one card!'
-    } else if (question.choose==2) {
-      var desc = 'Choose two cards!'
-    }
+    displayDescription(question);
+  }
+
+  function displayDescription(question){
+    var desc;
+    if (game.isCardCzar){
+      desc = 'You are the card czar!  Waiting for players to choose their cards.'
+    } else {
+      if (game.chosen) {
+        desc = 'Waiting for other players to choose!'
+      } else {
+        // if you haven't chosen display how many you can choose
+        if (question.choose==1) {
+          desc = 'Choose one card!'
+        } else if (question.choose==2) {
+          desc = 'Choose two cards!'
+        }
+      }
+    } 
     $('#desc-msg').html(desc);
   }
 
@@ -111,10 +132,11 @@ $(document).ready(function() {
   function activateGame(e){
     e.preventDefault();
     socket.emit('start game', function(){
-      $('#desc-msg').text('You are the word czar!  Waiting for players to choose their cards.')
+      game.isCardCzar = true;
+      $('#desc-msg').text('You are the card czar!  Waiting for players to choose their cards.')
       $('#fade').hide();
       $('#overlay').hide();
-      game.wordCzar = true;
+      $('#cards').addClass('no-hover');
     });
   }
 
@@ -133,5 +155,34 @@ $(document).ready(function() {
     }
     $('#timer').html(minutes+':'+seconds);
   });
+
+  socket.on('card chosen', function(card){
+    addChosenCard(card);
+  });
+
+  function addChosenCard(card){
+    $('#chosen-cards').append('<div class="card">' + card + '</div>');
+  }
+
+  socket.on('all cards chosen', function(cardCzar){
+    $('#cards').hide();
+    $('#chosen-cards').show();
+    if (game.isCardCzar){
+      $('#desc-msg').html('Choose the winning card!')
+      $('#chosen-cards .cards').click(chooseWinningCard);
+      $('#chosen-cards').removeClass('no-hover');
+    } else {
+      console.log(cardCzar);
+      $('#desc-msg').html('Waiting for ' + cardCzar + ' to choose!');
+    }
+  });
+
+  function chooseWinningCard(e){
+    var card = $(this);
+  }
+
+  function showWinningCard(){
+
+  }
 
 });

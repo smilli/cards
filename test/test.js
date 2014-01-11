@@ -1,44 +1,42 @@
 var assert = require('assert');
-var Browser = require('zombie');
-var decks = require('./../lib/decks.js');
-var gameServer = require('./../lib/game-server.js');
+var should = require('should');
+var request = require('request');
+var io = require('socket.io-client');
+var Room = require('./../lib/room');
+var decks = require('./../lib/decks');
+var gameServer = require('./../lib/game-server');
 
-var BASE_URL = 'http://localhost:3000/'
+var BASE_URL = 'http://localhost:3000'
 
 describe('game server', function(){
-  var browser;
 
-  before(function(done){
-    browser = new Browser();
-    browser
-      .visit(BASE_URL + '1')
-      .then(done, done)
-  });
-
-  it('should not receive a response', function(){
-    assert.equal(browser.text(), '');
-  });
-
-  before(function(done){
-    browser
-      .visit(BASE_URL)
-      .then(function(){
-        browser.pressButton('#new-game');
-      })
-      .then(done, done);
-  });
-
-  // this is not currently working
-  it('should create a new game', function(done){
-    console.log('new game');
-    console.log(browser.location.href);
-    console.log(browser.text());
-    browser
-      .visit(BASE_URL + '1')
-      .then(function(){
-        assert.notEqual(browser.text(), '');
+  describe('#createNewRoom()', function(){
+    it('should create a new room', function(done){
+      var lastRoomId = Room.latestRoomId;
+      request = request.post(BASE_URL + '/addGame', function(err, res, body){
+        if (err) done(err);
+        var currentRoomId = Room.latestRoomId;
+        console.log(lastRoomId + ' ' + currentRoomId);
+        assert.equal(lastRoomId, currentRoomId-1);
         done();
-      })
+      });
+    });
+  });
+
+  describe('#initializeConnections()', function(){
+  });
+
+  describe('#handleGameActivation()', function(){
+      it('should allow game activation when 3 users connect', function(){
+      var roomId = 1
+      var room = Room.getRoom(roomId);
+      var client1 = io.connect(BASE_URL + '/' + roomId);
+      var client2 = io.connect(BASE_URL + '/' + roomId);
+      var client3 = io.connect(BASE_URL + '/' + roomId);
+
+      assert.strictEqual(room.canBeActivated(), true);
+
+    });
   });
 });
 

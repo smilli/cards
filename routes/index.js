@@ -38,6 +38,7 @@ exports.game = function(req, res){
       res.render('game', {title: 'Cards Against Humanity', active: false});
     // there are 2 players & user hasn't refreshed
     } else if (visitedRoom.numPlayers() === Room.MIN_PLAYERS - 1 && !visitedRoom.isInRoom(userId)){
+      console.log('not in room yet');
       res.render('game', {title: 'Cards Against Humanity', active: false});
     } else {
       res.render('game', {title: 'Cards Against Humanity', url: BASE_URL+req.path, active: false});

@@ -10,6 +10,7 @@ html, body{
   padding: 0;
   margin: 0;
   font-size: 100%;
+  overflow-y: hidden;
 }
 
 body {
@@ -33,6 +34,7 @@ a {
   color: #fff;
   font-size: 2rem;
   border-bottom: 1px solid #585858;
+  overflow: auto;
 }
 
 #usersDiv{
@@ -145,10 +147,26 @@ a {
   color: #fff;
 }
 
+#cards{
+  width: 100%;
+  height: 100%;
+}
+
+#chosen-cards{
+  display: none;
+  width: 100%;
+  height: 100%;
+}
+
+.no-hover .card:hover{
+  background-color: #fff;
+}
+
 .card{
   float: left;
   width: 18%;
   height: 35%;
+  overflow: auto;
   margin: 1%;
   padding: 1%;
   background-color: #fff;
