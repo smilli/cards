@@ -10,6 +10,7 @@ var express = require('express')
   , routes = require('./routes')
   , http = require('http')
   , path = require('path')
+  , stylus = require('stylus')
   , gameServer = require('./lib/game-server');
 
 var app = express();
@@ -27,6 +28,7 @@ app.use(express.session({
 }));
 app.use(express.json());
 app.use(express.urlencoded());
+app.use(stylus.middleware(__dirname + '/public'));
 app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
 // app.use(errorHandler);
@@ -42,6 +44,7 @@ if ('development' == app.get('env')) {
 }
 
 app.get('/', routes.index);
+app.get('/test', routes.test);
 app.post('/addGame', gameServer.createNewRoom);
 app.get('/:roomId', findGame, routes.game); 
 

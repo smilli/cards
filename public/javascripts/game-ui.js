@@ -8,8 +8,22 @@ function divSystemContentElement(message) {
 
 var socket = io.connect();
 
+function calcCardHeight(){
+  var width = $(window).width(); 
+  var cardWidth = width * 0.75 * 0.17; // is 17% of 75%
+  var cardHeight = cardWidth * 1.2;
+  return cardHeight;
+}
+
+
 $(document).ready(function() {
   var game;
+
+  $(window).resize(function() {
+    cardHeight = calcCardHeight();
+    console.log(cardHeight);
+    $('.card').attr("style", "height: " + cardHeight + ";");
+  });
 
   socket.on('connect', function(){
     socket.emit('init', {url: document.URL});
@@ -26,8 +40,9 @@ $(document).ready(function() {
 
   function displayCards(cards){
     var html = '';
+    var cardHeight = calcCardHeight();
     for (var i = 0; i < cards.length; i++){
-      html += '<div class="card">' + cards[i] + '</div>';
+      html += '<div class="card" style="height: ' + cardHeight + ';">' + cards[i] + '</div>';
     }
     $('#cards').html(html);
 
@@ -56,7 +71,7 @@ $(document).ready(function() {
   socket.on('current question', updateQuestion);
 
   function updateQuestion(question){
-    $('#questionCard').html(question.text);
+    $('#question-card').html(question.text);
     game.numToChoose = question.choose;
     displayDescription(question);
   }
@@ -161,7 +176,8 @@ $(document).ready(function() {
   });
 
   function addChosenCard(card){
-    $('#chosen-cards').append('<div class="card">' + card + '</div>');
+    var cardHeight = calcCardHeight();
+    $('#chosen-cards').append('<div class="card" style="height: ' + cardHeight + ';">' + card + '</div>');
   }
 
   socket.on('all cards chosen', function(cardCzar){
