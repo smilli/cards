@@ -7,42 +7,34 @@
   <div id="header">
     <div id="header-wrap">
       <% if (active==false) { %>
-        <div id="directions">
+        <div id="left-header">
           This game has not started yet, share this link with your friends!
           <br/><span id="link"><%= url %></span>
         </div>
         <div id="question-card">
-          Waiting for at least three players!
+          
         </div>
-        <div id="cards-won">
+        <div id="right-header">
           Waiting for at least three players!
         </div>
       <% } else { %>
-        <div id="directions">
+        <div id="left-header">
           Card Czar: Smitha
           <br/>Choose a card!
           <br/><span id="timer">3:00</span>
         </div>
-        <div id="question-card">
-          Due to a PR fiasco, Walmart no longer offers _____.
+        <div id="question">
+          <div id="question-card">
+            Due to a PR fiasco, Walmart no longer offers _____.
+          </div>
         </div>
-        <div id="cards-won">
+        <div id="right-header">
           Cards Won:<br/>None yet
         </div>
       <% } %>
     </div>
   </div>
-  <div id="cards">
-    <div class="card">Unfathomable stupidity</div>
-    <div class="card">Balls</div>
-    <div class="card">Self-loathing</div>
-    <div class="card">My genitals</div>
-    <div class="card">A middle-aged man on roller skates</div>
-    <div class="card">The World of Warcraft</div>
-    <div class="card">Mr. Clean, right behind you</div>
-    <div class="card">A sea of troubles</div>
-    <div class="card">Child abuse</div>
-    <div class="card">Black people</div>
+  <div id="cards" class="no-hover">
   </div>
   <div id="chat">
     <div id="users"></div>

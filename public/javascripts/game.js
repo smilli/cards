@@ -5,8 +5,8 @@ var Game = function(socket, name, roomId, isCardCzar, chosen) {
   this.isCardCzar = isCardCzar;
   this.chosen = chosen;
   this.roomId = roomId;
-};
 
-Game.prototype.sendMessage = function(message) {
-  this.socket.emit('message', message);
+  // only used to save at the beginning before game is active
+  this.cards = [];
+  this.question = null;
 };

@@ -1,4 +1,6 @@
 questionHeight = 225px
+questionWidth = questionHeight * 0.8;
+headerWidth = 1000px
 headerHeight = 270px
 
 border-radius(n)
@@ -66,20 +68,21 @@ html, body{
 }
 
 #header-wrap{
+  position: relative;
   width: 1000px;
   margin: auto;
 }
 
-#directions, #cards-won{
+#left-header, #right-header{
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 40px;
   font-weight: 100;
+  height: questionHeight;
 }
 
-#directions{
-  width: 42.5%;
+#left-header{
+  width: 33%;
   float: left;
-  height: 100%;
 }
 
 #timer{
@@ -87,11 +90,12 @@ html, body{
 }
 
 #question-card{
+  position: absolute;
+  left: (headerWidth / 2) - (questionWidth / 2);
   float: left;
-  position: relative;
   margin: auto;
   height: questionHeight;
-  width: @height * 0.8;
+  width: questionWidth;
   background-color: #000;
   border-radius(7px);
   font-size: 1.1rem;
@@ -102,9 +106,10 @@ html, body{
   font-weight: 700;
 }
 
-#cards-won{
-  text-align: right;
+#right-header{
   float: right;
+  width: 33%;
+  text-align: right;
   height: 100%;
 }
 
@@ -113,6 +118,10 @@ html, body{
   background-color: #D8D8D8;
   width: 75%;  
   float: left;
+}
+
+.no-hover .card:hover{
+  background-color: #fff;
 }
 
 .card{
@@ -127,6 +136,10 @@ html, body{
   box-shadow: 1px 1px 1px 1px #999999;
   font-size: 1.1rem;
   font-weight: 700;
+}
+
+.card:hover{
+  background-color: #D8D8D8;
 }
 
 #chat{

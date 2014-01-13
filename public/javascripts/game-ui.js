@@ -21,7 +21,6 @@ $(document).ready(function() {
 
   $(window).resize(function() {
     cardHeight = calcCardHeight();
-    console.log(cardHeight);
     $('.card').attr("style", "height: " + cardHeight + ";");
   });
 
@@ -32,21 +31,38 @@ $(document).ready(function() {
   // after server checks to make sure this is a valid room
   socket.on('init', function(data){
       game = new Game(socket, data.name, data.roomId, data.isCardCzar, data.cardChosen);
-      displayCards(data.cards);
-      updateQuestion(data.question);
+      game.cards = data.cards;
+      game.question = data.question;
+      if (data.active) {
+        displayCards(data.cards);
+        updateQuestion(data.question);
+      } else {
+        displayCards();
+      }
       displayUsers(data.users);
       console.log('initialized')
   });
 
   function displayCards(cards){
+    // If no cards are given, displays 10 cards with no text
     var html = '';
     var cardHeight = calcCardHeight();
-    for (var i = 0; i < cards.length; i++){
-      html += '<div class="card" style="height: ' + cardHeight + ';">' + cards[i] + '</div>';
+    if (cards){
+      for (var i = 0; i < cards.length; i++){
+        html += '<div class="card" style="height: ' + cardHeight + ';">' + cards[i] + '</div>';
+      }
+    } else {
+      for (var i = 0; i < 10; i++){
+        html += '<div class="card" style="height: ' + cardHeight + ';"></div>'
+      }
     }
+    
     $('#cards').html(html);
 
-    attachCardClickHandler();
+    if (cards && !game.cardChosen) {
+      attachCardClickHandler();
+      // Remove no-hover class
+    }
   }
 
   function attachCardClickHandler(){
@@ -114,7 +130,9 @@ $(document).ready(function() {
 
   // min number of players achieved
   socket.on('can activate game', function(){
-    $('#overlay').html('<button id="start">START</button>');
+    console.log('can activate yo');
+    $('#right-header').html('Ready to begin? <button id="start">START</button>');
+    // what about for when it is active right off the bat?
     $('#start').click(activateGame);
   });
 
@@ -133,7 +151,7 @@ $(document).ready(function() {
   $('#message-form').submit(function(e){
     e.preventDefault();
     var message = $('#message').val();
-    if(message){
+    if (message) {
       game.sendMessage(message); 
       $('#chat').append(divEscapedContentElement(game.name + ': ' + message));
       $('#chat').scrollTop($('#chat').prop('scrollHeight'));
@@ -141,11 +159,7 @@ $(document).ready(function() {
     }
   });
 
-  // when user clicks start game button
-  $('#start').click(activateGame);
-
-  function activateGame(e){
-    e.preventDefault();
+  function activateGame(){
     socket.emit('start game', function(){
       game.isCardCzar = true;
       $('#desc-msg').text('You are the card czar!  Waiting for players to choose their cards.')

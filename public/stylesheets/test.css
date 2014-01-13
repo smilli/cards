@@ -52,26 +52,28 @@ body {
   border-bottom: 1px solid #c8c8c8;
 }
 #header-wrap {
+  position: relative;
   width: 1000px;
   margin: auto;
 }
-#directions,
-#cards-won {
+#left-header,
+#right-header {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 40px;
   font-weight: 100;
+  height: 225px;
 }
-#directions {
-  width: 42.5%;
+#left-header {
+  width: 33%;
   float: left;
-  height: 100%;
 }
 #timer {
   font-size: 80px;
 }
 #question-card {
+  position: absolute;
+  left: 410px;
   float: left;
-  position: relative;
   margin: auto;
   height: 225px;
   width: 180px;
@@ -87,15 +89,19 @@ body {
   padding: 1.2%;
   font-weight: 700;
 }
-#cards-won {
-  text-align: right;
+#right-header {
   float: right;
+  width: 33%;
+  text-align: right;
   height: 100%;
 }
 #cards {
   background-color: #d8d8d8;
   width: 75%;
   float: left;
+}
+.no-hover .card:hover {
+  background-color: #fff;
 }
 .card {
   padding: 1.2%;
@@ -112,6 +118,9 @@ body {
   box-shadow: 2px 2px 2px 2px #a6a6a6;
   font-size: 1.1rem;
   font-weight: 700;
+}
+.card:hover {
+  background-color: #d8d8d8;
 }
 #chat {
   float: left;
