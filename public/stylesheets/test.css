@@ -95,6 +95,22 @@ body {
   text-align: right;
   height: 100%;
 }
+#start {
+  clear: both;
+  border: 0px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  font-family: inherit;
+  font-size: inherit;
+  background-color: #000;
+  color: #fff;
+  outline: none;
+}
+#start:hover {
+  cursor: pointer;
+  background-color: #999;
+}
 #cards {
   background-color: #d8d8d8;
   width: 75%;
@@ -102,6 +118,7 @@ body {
 }
 .no-hover .card:hover {
   background-color: #fff;
+  cursor: default;
 }
 .card {
   padding: 1.2%;
@@ -121,6 +138,7 @@ body {
 }
 .card:hover {
   background-color: #d8d8d8;
+  cursor: pointer;
 }
 #chat {
   float: left;

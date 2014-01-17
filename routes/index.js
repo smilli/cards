@@ -40,13 +40,13 @@ exports.game = function(req, res){
       res.render('full', {msg: 'Sorry, this game is already full!'});
     // there are 3 players in room
     } else if (visitedRoom.canBeActivated()) {
-      res.render('test', {active: false, url: url});
+      res.render('test', {active: false, url: url, canActivate: true});
     // there are 2 players & user hasn't refreshed
     } else if (visitedRoom.numPlayers() === Room.MIN_PLAYERS - 1 && !visitedRoom.isInRoom(userId)){
       console.log('not in room yet');
-      res.render('test', {active: false, url: url});
+      res.render('test', {active: false, url: url, canActivate: true});
     } else {
-      res.render('test', {active: false, url: url});
+      res.render('test', {active: false, url: url, canActivate: false});
     }
   }
 };

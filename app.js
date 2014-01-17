@@ -10,7 +10,6 @@ var express = require('express')
   , routes = require('./routes')
   , http = require('http')
   , path = require('path')
-  , stylus = require('stylus')
   , gameServer = require('./lib/game-server');
 
 var app = express();
@@ -28,7 +27,6 @@ app.use(express.session({
 }));
 app.use(express.json());
 app.use(express.urlencoded());
-app.use(stylus.middleware(__dirname + '/public'));
 app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
 // app.use(errorHandler);

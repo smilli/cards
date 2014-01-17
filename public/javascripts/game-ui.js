@@ -40,7 +40,8 @@ $(document).ready(function() {
         displayCards();
       }
       displayUsers(data.users);
-      console.log('initialized')
+      // If the user is the third person to enter
+      $('#start').click(activateGame);
   });
 
   function displayCards(cards){

@@ -15,7 +15,12 @@
           
         </div>
         <div id="right-header">
-          Waiting for at least three players!
+          <% if (canActivate==true) { %>
+            Ready to begin?
+            <button id="start">START</button>
+          <% } else { %>
+            Waiting for at least three players!
+          <% } %>
         </div>
       <% } else { %>
         <div id="left-header">
