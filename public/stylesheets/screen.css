@@ -9612,21 +9612,20 @@ html, body {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 3rem;
   font-weight: 100;
-  float: left;
 }
 
-/* line 62, ../../sass/screen.scss */
+/* line 61, ../../sass/screen.scss */
 #left-header {
   float: left;
 }
 
-/* line 66, ../../sass/screen.scss */
+/* line 65, ../../sass/screen.scss */
 #right-header {
   text-align: right;
   float: right;
 }
 
-/* line 71, ../../sass/screen.scss */
+/* line 70, ../../sass/screen.scss */
 #question-card {
   width: 180px;
   height: 225px;
@@ -9643,7 +9642,7 @@ html, body {
   text-align: left;
 }
 
-/* line 84, ../../sass/screen.scss */
+/* line 83, ../../sass/screen.scss */
 #cards {
   display: block;
   padding: 0;
@@ -9710,7 +9709,7 @@ html, body {
   margin: 1%;
 }
 
-/* line 93, ../../sass/screen.scss */
+/* line 92, ../../sass/screen.scss */
 .card {
   background-color: #fff;
   -webkit-border-radius: 10px;

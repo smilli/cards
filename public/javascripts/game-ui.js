@@ -9,8 +9,7 @@ function divSystemContentElement(message) {
 var socket = io.connect();
 
 function calcCardHeight(){
-  var width = $(window).width(); 
-  var cardWidth = width * 0.75 * 0.17; // is 17% of 75%
+  var cardWidth = $('.card:first').width();
   var cardHeight = cardWidth * 1.2;
   return cardHeight;
 }
@@ -21,7 +20,7 @@ $(document).ready(function() {
 
   $(window).resize(function() {
     cardHeight = calcCardHeight();
-    $('.card').attr("style", "height: " + cardHeight + ";");
+    $('.card').attr("style", "height: " + cardHeight + "px;");
   });
 
   socket.on('connect', function(){
@@ -36,31 +35,25 @@ $(document).ready(function() {
       if (data.active) {
         displayCards(data.cards);
         updateQuestion(data.question);
-      } else {
-        displayCards();
-      }
+      } 
+      displayCards(data.cards); // for testing REMOVE later
       displayUsers(data.users);
       // If the user is the third person to enter
       $('#start').click(activateGame);
   });
 
   function displayCards(cards){
-    // If no cards are given, displays 10 cards with no text
-    var html = '';
-    var cardHeight = calcCardHeight();
-    if (cards){
-      for (var i = 0; i < cards.length; i++){
-        html += '<div class="card" style="height: ' + cardHeight + ';">' + cards[i] + '</div>';
-      }
-    } else {
-      for (var i = 0; i < 10; i++){
-        html += '<div class="card" style="height: ' + cardHeight + ';"></div>'
-      }
+    console.log(cards);
+    var $cards = $('#cards .card');
+    if (cards.length !== $cards.length) {
+      throw new Error('Number of cards received does not match number of cards on page');
     }
-    
-    $('#cards').html(html);
+    $.each($('#cards .card'), function(ind, element){
+      $(element).text(cards[ind]);
+      $(element).height(calcCardHeight());
+    });
 
-    if (cards && !game.cardChosen) {
+    if (!game.cardChosen) {
       attachCardClickHandler();
       // Remove no-hover class
     }
